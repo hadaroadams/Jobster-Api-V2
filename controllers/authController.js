@@ -8,7 +8,7 @@ const {
   Unathorized,
 } = require("./../errors");
 
-const register = asyncFunc(async (res, req, next) => {
+const register = asyncFunc(async (req, res, next) => {
   const user = await User.create({ ...req.body });
   console.log(user);
   const token = user.createJWT();
@@ -23,7 +23,7 @@ const register = asyncFunc(async (res, req, next) => {
   });
 });
 
-const login = asyncFunc(async (res, req, next) => {
+const login = asyncFunc(async (req, res, next) => {
   const { email, password } = req.body;
   if (!email || !password)
     return next(new BadRequest("please provide email and password"));

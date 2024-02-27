@@ -3,7 +3,7 @@ const asyncFunc = (func) => {
     try {
       return await func(req, res, next);
     } catch (error) {
-    //   console.log(error);
+      console.log(error);
       next(error);
     }
   };

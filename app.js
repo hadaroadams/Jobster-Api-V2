@@ -1,5 +1,5 @@
 require("dotenv").config();
-// require("express-async-errors");
+require("express-async-errors");
 const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
@@ -13,6 +13,8 @@ const rateLimite = require("express-rate-limit");
 const notFound = require("./middleware/notfound");
 const connectDB = require("./config/dbconn");
 const authRoute = require("./routes/user");
+const jobsRoute = require("./routes/job");
+const authentication = require("./middleware/authentication");
 const errorHandler = require("./middleware/errorHandler");
 
 connectDB();
@@ -39,6 +41,7 @@ app.use(helmet());
 app.use(xss());
 
 app.use("/api/v2/auth", authRoute);
+app.use("/api/v2/jobs", authentication, jobsRoute);
 
 app.use(errorHandler);
 app.use(notFound);

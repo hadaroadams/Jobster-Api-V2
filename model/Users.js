@@ -40,17 +40,17 @@ const UserSchema = new Schema({
 });
 
 UserSchema.pre("save", async function () {
-  if (this.password.isModifed()) return;
+  if (!this.isModified('password')) return;
   console.log(this);
   const salt = await bcrypt.genSalt(10);
   this.password = await bcrypt.hash(this.password, salt);
   console.log(this.password);
 });
 
-UserSchema.methods.createJWt = function () {
+UserSchema.methods.createJWT = function () {
   return jwt.sign(
     { userID: this._id, name: this.firstName },
-    process.env.JWT.SECRETE.TOKEN,
+    process.env.JWT_SECRETE_TOKEN,
     {
       expiresIn: "1d",
     }
@@ -61,4 +61,4 @@ UserSchema.methods.comparePassword = async function (candidatesPassword) {
   return await bcrypt.compare(candidatesPassword, this.password);
 };
 
-module.exports = model("Users", UserSchema);
+module.exports = model("User", UserSchema);
